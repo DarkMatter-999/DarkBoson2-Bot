@@ -15,6 +15,28 @@ const PREFIX = '!'
 
 client.on('ready', () => {
     console.log("Connected to Discord")
+
+    let commands = client.application?.commands
+
+    commands?.create({
+        name:'ping',
+        description: 'replies with pong'
+    })
+})
+
+client.on("interactionCreate",async (interaction) => {
+    if(!interaction.isCommand()) {
+        return
+    }
+
+    const { cmdName, options } = interaction
+    
+    if (cmdName === 'ping') {
+        interaction.reply({
+            content: 'pong',
+            ephemeral: true,
+        })
+    }
 })
 
 client.on("messageCreate", (message) => {
