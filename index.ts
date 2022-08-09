@@ -171,17 +171,16 @@ client.on("messageCreate", async (message) => {
                 await message.reply("Usage: !abhi <Batch>")
                 return
             }
-
+            
             const batches = Object.getOwnPropertyNames(timetable)
             if(!batches.includes(batch)) {
                 await message.reply("Please choose from: **" + batches.toString() + "**")
                 return
             }
-
             const date = new Date()
             var day = date.getDay()
 
-            var periods = Object.getOwnPropertyNames(timetable[batch][day.toString()])
+            const periods = Object.getOwnPropertyNames(timetable[batch][day.toString()])
 
             var time = (date.getHours()).toString().padStart(2, "0") + ":" + date.getMinutes().toString().padStart(2, "0") 
 
@@ -192,10 +191,15 @@ client.on("messageCreate", async (message) => {
                 if ( timetable[batch][day.toString()][p]["StartTime"] < time && time < timetable[batch][day.toString()][p]["EndTime"] ) {
                     Response.setTitle(timetable[batch][day.toString()][p]["Subj"])
                     Response.addFields(
-                        { name: timetable[batch][day.toString()][p]["Location"], value: (timetable[batch][day.toString()][p]["StartTime"] + "-" + timetable[batch][day.toString()][p]["EndTime"]) + "\n"}
+                        { name: timetable[batch][day.toString()][p]["Location"], value: (timetable[batch][day.toString()][p]["StartTime"] + "-" + timetable[batch][day.toString()][p]["EndTime"]) + "\n"},
+                        { name: "Time", value: time.toString()}
                     )
-                }
+                    await message.reply({embeds: [Response]})
+                    return 
+                    }
             }
+
+            Response.setTitle("Kuch nahi")
 
             await message.reply({embeds: [Response]})
         
