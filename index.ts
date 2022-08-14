@@ -116,7 +116,7 @@ client.on("messageCreate", async (message) => {
             }
 
             const date = new Date()
-            var day = date.getDay() + 1
+            var day = (date.getDay() + 1)%7
 
             var periods = Object.getOwnPropertyNames(timetable[batch][day.toString()])
 
